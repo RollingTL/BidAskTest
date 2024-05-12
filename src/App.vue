@@ -16,6 +16,17 @@ import { RouterLink, RouterView } from 'vue-router'
   </header>
 
   <RouterView />
+  <div class="test">
+    sdfs
+    <v-icon icon="mdi-home" />
+  </div>
+  <div>
+    <v-card text="...aaa" variant="tonal"></v-card>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.test {
+  color: red;
+}
+</style>

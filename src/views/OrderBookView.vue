@@ -83,5 +83,7 @@ onUnmounted(() => {
 */
 </script>
 <template>
-  <h1>Order Book</h1>
+  <v-card max-width="680" elevation="0" class="w-100">
+    <v-card-title>Order Book</v-card-title>
+  </v-card>
 </template>

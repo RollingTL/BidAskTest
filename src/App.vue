@@ -42,8 +42,10 @@ const menuItems = [
     </v-app-bar>
 
     <!-- <router-view></router-view> -->
-    <v-main class="ma-4 d-flex justify-center align-start">
-      <router-view></router-view>
+    <v-main class="d-flex justify-center align-start ma-0 pa-0 h-screen">
+      <v-sheet class="w-100" max-width="680">
+        <router-view></router-view>
+      </v-sheet>
     </v-main>
   </v-app>
 </template>

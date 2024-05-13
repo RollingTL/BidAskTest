@@ -5,51 +5,58 @@ import { computed } from 'vue'
 const { selectedPair, pairChangeLog } = usePairs()
 
 const log = computed(() => {
-  return pairChangeLog.value
-    .slice()
-    .reverse()
-    .map((logItem) => {
-      const formattedDate = new Intl.DateTimeFormat('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
-        // year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZoneName: 'short'
-      }).format(logItem.time)
+  if (pairChangeLog.value === undefined || pairChangeLog.value.length === 0) return '.'
+  else
+    return pairChangeLog.value
+      .slice()
+      .reverse()
+      .map((logItem) => {
+        const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+          day: '2-digit',
+          month: '2-digit',
+          // year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          timeZoneName: 'short'
+        }).format(logItem.time)
 
-      return `${formattedDate} ${logItem.prevPair} ${logItem.newPair}`
-    })
-    .join('<br/>')
+        return `${formattedDate} ${logItem.prevPair} ${logItem.newPair}`
+      })
+      .join('<br/>')
 })
 </script>
 <template>
-  <v-card elevation="0" max-width="680" class="w-auto-100 w-100">
-    <v-card-title>Settings</v-card-title>
-    <v-card class="bg-amber-accent-2">
-      <v-card-text class="text-center text-center">
-        <v-radio-group v-model="selectedPair" class="pt-8">
-          <v-radio label="BTC USDT" value="BTCUSDT"></v-radio>
-          <v-divider></v-divider>
-          <v-radio label="BNB BTC" value="BNBBTC"></v-radio>
-          <v-divider></v-divider>
-          <v-radio label="ETH BTC" value="ETHBTC"></v-radio>
-          <v-divider></v-divider>
-        </v-radio-group>
-      </v-card-text>
-    </v-card>
-    <!-- <v-divider></v-divider> -->
-    <v-card class="w-100 mt-2">
-      <v-card-title>Log</v-card-title>
-      <v-card-text class="w-100">
-        <v-sheet
-          height="400"
-          class="overflow-y-scroll pr-2 w-full w-100 bg-transparent text-body-2"
-        >
-          <div v-html="log" class="font-mono overflow-y-scroll w-100 bg-transparent"></div>
-        </v-sheet>
-      </v-card-text>
-    </v-card>
-  </v-card>
+  <div class="h-screen h-sm-auto d-flex flex-column justify-start">
+    <div class="mt-16 pt-4">
+      <v-card elevation="0" class="">
+        <v-card-title>Settings</v-card-title>
+        <v-card class="">
+          <v-card-text class="text-center text-center">
+            <v-radio-group v-model="selectedPair" class="pt-8">
+              <v-radio label="BTC USDT" value="BTCUSDT"></v-radio>
+              <v-divider></v-divider>
+              <v-radio label="BNB BTC" value="BNBBTC"></v-radio>
+              <v-divider></v-divider>
+              <v-radio label="ETH BTC" value="ETHBTC"></v-radio>
+              <v-divider></v-divider>
+            </v-radio-group>
+          </v-card-text>
+        </v-card>
+      </v-card>
+    </div>
+    <div class="">
+      <v-card elevation="0" class="mt-4">
+        <v-card-title>Log</v-card-title>
+        <v-divider></v-divider>
+      </v-card>
+    </div>
+    <div class="flex-grow-1 overflow-y-scroll">
+      <v-card elevation="0" class="">
+        <v-card-text class="">
+          <div v-html="log" class="font-mono"></div>
+        </v-card-text>
+      </v-card>
+    </div>
+  </div>
 </template>

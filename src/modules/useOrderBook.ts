@@ -1,33 +1,35 @@
-// import { ref } from 'vue'
+import { ref } from 'vue'
 
-// const data = ref<string>('')
-// const API_KEY = '';
-// const API_SECRET = '';
-// const BASE_URL = 'https://api.binance.com';
-// export const useOrderBook = function () {
-//   const fetch = async () => {
-//     const apiUrl = 'https://api.benance.com/api';
+const URL = 'https://api.binance.com/api/v3/depth'
 
-//     try {
-//       // Make a GET request to the API endpoint
-//       const response = await fetch(apiUrl);
+export const useOrderBook = function () {
+  const orderBook = ref<OrderBook>()
+  async function init() {
+    // Replace 'https://api.example.com/data' with the URL of your API
+    const apiUrl = `${URL}?symbol=BTCUSDT&limit=100`
 
-//       // Check if the response is successful
-//       if (!response.ok) {
-//         throw new Error('Network response was not ok');
-//       }
+    try {
+      // Make a GET request to the API endpoint
+      const response = await fetch(apiUrl)
 
-//       // Parse the JSON response
-//       const data = await response.json();
+      // Check if the response is successful
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
 
-//       // Process the JSON data
-//       console.log(data);
-//       // You can do something with the data here
-//     } catch (error) {
-//       // Handle any errors that occurred during the fetch
-//       console.error('There was a problem with the fetch operation:', error);
-//     }
-//   }
+      // Parse the JSON response
+      const data = await response.json()
 
-//   return { fetch }
-// }
+      // Process the JSON data
+      console.log(data)
+
+      orderBook.value = data
+      // You can do something with the data here
+    } catch (error) {
+      // Handle any errors that occurred during the fetch
+      console.error('There was a problem with the fetch operation:', error)
+    }
+  }
+
+  return { init, orderBook }
+}

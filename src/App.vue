@@ -12,8 +12,8 @@ const menuItems = [
 </script>
 
 <template>
-  <v-app id="inspire" class="h-auto w-auto">
-    <v-app-bar class="px-4" :elevation="1">
+  <v-app>
+    <v-app-bar class="px-4 px-md-8" :elevation="1">
       <v-btn icon="mdi-wallet" to="/"> </v-btn>
       <v-spacer></v-spacer>
       <v-tabs class="d-none d-sm-flex">
@@ -25,11 +25,11 @@ const menuItems = [
         >
         </v-list-item>
       </v-tabs>
-      <v-menu class="">
+      <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn class="d-xs-flex d-sm-none" icon="mdi-dots-vertical" v-bind="props"></v-btn>
         </template>
-        <v-list>
+        <v-list class="mt-2">
           <v-list-item
             v-for="item in menuItems"
             :key="item.title"
@@ -42,7 +42,7 @@ const menuItems = [
     </v-app-bar>
 
     <!-- <router-view></router-view> -->
-    <v-main class="ma-4 d-flex justify-center">
+    <v-main class="ma-4 d-flex justify-center align-start">
       <router-view></router-view>
     </v-main>
   </v-app>

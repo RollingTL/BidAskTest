@@ -1,12 +1,14 @@
 import { ref } from 'vue'
-
+import { useDepth } from '@/modules/useDepth'
 const URL = 'https://api.binance.com/api/v3/depth'
 
 export const useOrderBook = function () {
+  const { depth } = useDepth()
   const orderBook = ref<OrderBook>()
+
   async function init() {
     // Replace 'https://api.example.com/data' with the URL of your API
-    const apiUrl = `${URL}?symbol=BTCUSDT&limit=100`
+    const apiUrl = `${URL}?symbol=BTCUSDT&limit=${depth.value.toString()}`
 
     try {
       // Make a GET request to the API endpoint

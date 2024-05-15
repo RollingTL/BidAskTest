@@ -16,10 +16,8 @@ const { selectedPair } = usePairs()
       <v-container class="">
         <v-row no-gutters class="">
           <v-col class="align-self-stretch">
-            <v-sheet class="pa-6 ma-2 bg-grey-lighten-4">
-              <v-sheet
-                class="px-2 d-flex align-center justify-center bg-transparent font-weight-bold"
-                height="72"
+            <v-sheet class="pa-2 pa-sm-8 ma-2 bg-grey-lighten-4">
+              <v-sheet class="px-2 pb-1 d-flex align-center justify-center bg-transparent"
                 >Bid Ask table</v-sheet
               >
               <v-btn prepend-icon="mdi-format-columns" size="large" block to="/order-book">
@@ -28,10 +26,8 @@ const { selectedPair } = usePairs()
             </v-sheet>
           </v-col>
           <v-col class="align-self-stretch">
-            <v-sheet class="pa-6 ma-2 bg-grey-lighten-4">
-              <v-sheet
-                class="px-2 d-flex align-center justify-center bg-transparent font-weight-bold"
-                height="72"
+            <v-sheet class="pa-2 pa-sm-8 ma-2 bg-grey-lighten-4">
+              <v-sheet class="px-2 pb-1 d-flex align-center justify-center bg-transparent"
                 >View and change Pair</v-sheet
               >
               <v-btn prepend-icon="mdi-cog-outline" size="large" block to="/settings">

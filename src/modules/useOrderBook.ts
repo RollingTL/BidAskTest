@@ -69,18 +69,15 @@ export const useOrderBook = function () {
       for (const [diffKey, diffValue] of diff) {
         const numericDiffValue = Number(diffValue)
         if (numericDiffValue === 0) {
-          // Remove base element with equal key
-          const indexToRemove = base.findIndex(([baseKey, _]) => baseKey === diffKey)
+          const indexToRemove = base.findIndex(([baseKey, _value]) => baseKey === diffKey)
           if (indexToRemove !== -1) {
             base.splice(indexToRemove, 1)
           }
         } else {
-          const foundIndex = base.findIndex(([baseKey, _]) => baseKey === diffKey)
+          const foundIndex = base.findIndex(([baseKey, _value]) => baseKey === diffKey)
           if (foundIndex !== -1) {
-            // Update existing element in base
             base[foundIndex][1] = diffValue
           } else {
-            // Add new element from diff to base
             base.push([diffKey, diffValue])
           }
         }

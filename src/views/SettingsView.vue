@@ -14,7 +14,7 @@ const log = computed(() => {
         const formattedDate = new Intl.DateTimeFormat('ru-RU', {
           day: '2-digit',
           month: '2-digit',
-          // year: 'numeric',
+          year: 'numeric',
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
@@ -33,7 +33,7 @@ const log = computed(() => {
         <v-card-title>Settings</v-card-title>
         <v-card class="bg-deep-orange-lighten-4">
           <v-card-text class="text-center">
-            <v-radio-group v-model="selectedPair" class="pt-8">
+            <v-radio-group v-model="selectedPair" class="pt-2">
               <v-radio label="BTC USDT" value="BTCUSDT"></v-radio>
               <v-divider></v-divider>
               <v-radio label="BNB BTC" value="BNBBTC"></v-radio>

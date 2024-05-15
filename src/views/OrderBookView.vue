@@ -56,45 +56,54 @@ onUnmounted(() => {
       </v-card>
     </div>
 
-    <div class="d-flex pt-4">
-      <div class="flex-grow-1">
+    <div class="d-flex justify-space-between pt-4">
+      <div class="flex-grow-1 pr-0 pr-sm-4">
         <table class="head-table">
           <tr>
-            <td>Bid value</td>
-            <td class="text-right">amount</td>
+            <td class="first text-center text-sm-left">Bid price</td>
+            <td class="second text-center text-sm-right">Amount</td>
+            <td class="third text-center text-sm-right hidden-xs hidden-sm">Value</td>
           </tr>
         </table>
       </div>
-      <div class="flex-grow-1">
+      <div class="flex-grow-1 pl-0 pl-sm-4">
         <table class="head-table">
           <tr>
-            <td>Ask value</td>
-            <td class="text-right">amount</td>
+            <td class="first text-center text-sm-left">Ask price</td>
+            <td class="second text-center text-sm-right">Amount</td>
+            <td class="third text-center text-sm-right hidden-xs hidden-sm">Value</td>
           </tr>
         </table>
       </div>
     </div>
     <div class="flex-grow-1 overflow-y-scroll">
-      <div class="d-flex text-mono text-right">
-        <div class="flex-grow-1">
+      <div v-if="orderBook" class="d-flex text-mono text-right pt-4 pb-8">
+        <div class="flex-grow-1 pr-1 pr-sm-4">
           <table class="data-table" v-if="orderBook">
             <tr v-for="(item, index) in orderBook.bids" :key="index + item[0]">
-              <td>{{ item[0] }}</td>
-              <td>{{ item[1] }}</td>
+              <td class="first">{{ item[0].slice(0, -2) }}</td>
+              <td class="second">{{ item[1].slice(0, -2) }}</td>
+              <td class="third hidden-xs hidden-sm">
+                {{ (Number(item[0]) * Number(item[1])).toFixed(2) }}
+              </td>
             </tr>
           </table>
         </div>
 
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 pl-0 pl-sm-4 pr-2 pr-sm-0">
           <table class="data-table" v-if="orderBook">
             <tr v-for="(item, index) in orderBook.asks" :key="index + item[0]">
-              <!-- <td>{{ item[0].toString().slice(0, -6) }}</td>
-              <td>{{ item[1].toString().slice(0, -3) }}</td> -->
-              <td>{{ item[0] }}</td>
-              <td>{{ item[1] }}</td>
+              <td class="first">{{ item[0].slice(0, -2) }}</td>
+              <td class="second">{{ item[1].slice(0, -2) }}</td>
+              <td class="third hidden-xs hidden-sm">
+                {{ (Number(item[0]) * Number(item[1])).toFixed(2) }}
+              </td>
             </tr>
           </table>
         </div>
+      </div>
+      <div v-else class="ma-12 d-flex justify-center">
+        <v-progress-circular :size="60" indeterminate></v-progress-circular>
       </div>
     </div>
   </div>
@@ -107,25 +116,59 @@ onUnmounted(() => {
 }
 
 table {
-  width: max-content;
-  margin: 0 1rem 0 1rem;
+  width: 100%;
   border-collapse: collapse;
+  box-sizing: border-box;
 }
 .head-table {
   td {
-    width: 90px;
-    padding: 3px 2px 1px 6px;
-    // font-size: 10px;
-
-    border: 1px solid black;
+    padding: 0 4px 4px 4px;
+    border-bottom: 2px solid black;
+    font-weight: bold;
+    font-size: 11px;
+    @media (min-width: 960px) {
+      font-size: 12px;
+    }
+  }
+  td.first {
+    width: 100px;
+    // background-color: aqua;
+  }
+  td.second {
+    // background-color: mediumseagreen;
+    @media (min-width: 960px) {
+      /* Increase font size for td on larger screens */
+      width: 100px;
+    }
+  }
+  td.third {
+    background-color: rgb(234, 234, 234);
   }
 }
 .data-table {
   td {
-    width: 90px;
-    padding: 3px 2px 1px 6px;
-    font-size: 12px;
+    padding: 0 4px 0 4px;
+    font-size: 11px;
     border-bottom: 1px solid black;
+    @media (min-width: 960px) {
+      font-size: 12px;
+    }
+  }
+
+  td.first {
+    width: 100px;
+    // background-color: aqua;
+  }
+
+  td.second {
+    @media (min-width: 960px) {
+      /* Increase font size for td on larger screens */
+      width: 100px;
+    }
+    // background-color: mediumseagreen;
+  }
+  td.third {
+    background-color: rgb(234, 234, 234);
   }
 }
 </style>

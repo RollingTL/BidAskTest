@@ -1,6 +1,6 @@
 # Koshelek
 
-Test task
+Test task by nurlan.bbjs@gmail.com
 
 ## Project Setup
 

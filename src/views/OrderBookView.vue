@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue'
+import { watch, onUnmounted } from 'vue'
 import { useOrderBook } from '@/modules/useOrderBook'
 import { useEvents } from '@/modules/useEvents'
 import { useDepth } from '@/modules/useDepth'
@@ -9,17 +9,21 @@ const { start, stop } = useEvents()
 const { depth } = useDepth()
 const { selectedPair } = usePairs()
 
-// init()
+start()
 
-const startProcess = () => {
-  start()
-}
-const stopProcess = () => {
-  stop()
-}
-
-watch(depth, (newValue, oldValue) => {
+watch(depth, async (newValue, oldValue) => {
   console.log('depth changed from', oldValue, 'to', newValue)
+  stop()
+  await new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve()
+    }, 1000)
+  })
+  start()
+})
+
+onUnmounted(() => {
+  stop()
 })
 </script>
 <template>
@@ -27,7 +31,7 @@ watch(depth, (newValue, oldValue) => {
     <div class="mt-16 pt-4">
       <v-card elevation="0" class="position-relative">
         <v-card-title
-          >Order Book - {{ selectedPair }}
+          >Order Book
           <div class="depth-selector d-flex align-baseline">
             <div class="text-subtitle-2 pr-2">Depth:</div>
             <v-menu>
@@ -48,18 +52,7 @@ watch(depth, (newValue, oldValue) => {
             </v-menu>
           </div>
         </v-card-title>
-
-        <!-- <v-card-text>
-          amountAsk: {{ orderBook?.asks.length }} amountBid: {{ orderBook?.bids.length }}
-        </v-card-text>
-        <v-card-text> depth: {{ depth }} </v-card-text>
-        <v-card-text> events: {{ eventData.length }} </v-card-text> -->
-      </v-card>
-      <v-card>
-        <v-card-text>
-          <v-btn @click="startProcess">Start</v-btn>
-          <v-btn @click="stopProcess">Stop</v-btn>
-        </v-card-text>
+        <v-card-subtitle>{{ selectedPair }}</v-card-subtitle>
       </v-card>
     </div>
 
@@ -109,17 +102,14 @@ watch(depth, (newValue, oldValue) => {
 <style lang="scss" scoped>
 .depth-selector {
   position: absolute;
-  right: 0;
+  right: 1rem;
   top: 5px;
 }
 
 table {
   width: max-content;
-  // padding: 0 4px 0 4px;
+  margin: 0 1rem 0 1rem;
   border-collapse: collapse;
-  // border: 1px solid black;
-  tr {
-  }
 }
 .head-table {
   td {
@@ -127,7 +117,7 @@ table {
     padding: 3px 2px 1px 6px;
     // font-size: 10px;
 
-    // border-bottom: 0;
+    border: 1px solid black;
   }
 }
 .data-table {

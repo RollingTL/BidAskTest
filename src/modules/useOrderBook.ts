@@ -1,16 +1,15 @@
-import { ref } from 'vue'
+import { ref, readonly } from 'vue'
 import { useDepth } from '@/modules/useDepth'
 import { usePairs } from '@/modules/usePairs'
 const URL = 'https://api.binance.com/api/v3/depth'
 const orderBook = ref<OrderBook>()
 const loadingState = ref<LoadingState>('idle')
 
-export const useOrderBook = function () {
-  const { depth } = useDepth()
-  const { selectedPair } = usePairs()
-  loadingState.value = 'idle'
+const { depth } = useDepth()
+const { selectedPair } = usePairs()
 
-  async function init() {
+export const useOrderBook = function () {
+  async function fetchData() {
     loadingState.value = 'loading'
     const apiUrl = `${URL}?symbol=${selectedPair.value}&limit=${depth.value.toString()}`
 
@@ -24,24 +23,27 @@ export const useOrderBook = function () {
       console.log(data)
 
       orderBook.value = data
-      loadingState.value = 'complete'
+      loadingState.value = 'idle'
     } catch (error) {
-      loadingState.value = 'error'
+      loadingState.value = 'idle'
       console.error('There was a problem with the fetch operation:', error)
+      throw new Error('Network response has error')
     }
   }
 
+  const initOrderBook = async () => {
+    if (loadingState.value !== 'loading') {
+      orderBook.value = undefined
+      await fetchData()
+    }
+  }
+
+  const clearOrderBook = () => {
+    orderBook.value = undefined
+  }
+
   const updateOrderBook = (depthUpdates: DepthUpdate[]) => {
-    if (loadingState.value === 'idle') {
-      init()
-      return
-    }
-    if (loadingState.value !== 'complete') return
-
-    if (!orderBook.value) {
-      return
-    }
-
+    if (!orderBook.value) return
     while (depthUpdates.length > 0) {
       const item = depthUpdates.shift()
       if (item) {
@@ -88,5 +90,5 @@ export const useOrderBook = function () {
     return
   }
 
-  return { init, orderBook, loadingState, updateOrderBook }
+  return { orderBook: readonly(orderBook), updateOrderBook, initOrderBook, clearOrderBook }
 }

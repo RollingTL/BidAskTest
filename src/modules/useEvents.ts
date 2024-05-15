@@ -3,8 +3,6 @@ import { useOrderBook } from '@/modules/useOrderBook'
 import { useDepthUpdates } from '@/modules/useDepthUpdates'
 import { usePairs } from '@/modules/usePairs'
 
-const { orderBook, updateOrderBook, loadingState: orderBookLoadingState } = useOrderBook()
-const { depthUpdates } = useDepthUpdates()
 // BTCUSDT, BNBBTC, ETHBTC
 
 const endpoint: string = 'wss://stream.binance.com:9443/ws/'
@@ -13,22 +11,17 @@ let pingInterval: number | null = null
 let ws: WebSocket
 
 export const useEvents = function () {
+  const { orderBook, initOrderBook, updateOrderBook, clearOrderBook } = useOrderBook()
+  const { depthUpdates } = useDepthUpdates()
   const { selectedPair } = usePairs()
 
   const start = async () => {
     if (ws) {
-      await new Promise<void>((resolve) => {
-        setTimeout(() => {
-          resolve()
-        }, 10000) // 10 seconds
-      })
       if (ws.readyState !== ws.CLOSED) return
     }
 
     ws = new WebSocket(endpoint + selectedPair.value.toLowerCase() + '@depth')
 
-    orderBook.value = undefined
-    orderBookLoadingState.value = 'idle'
     ws.onopen = () => {
       console.log('Connected to Binance WebSocket API')
       setInterval(() => {
@@ -60,10 +53,7 @@ export const useEvents = function () {
   }
 
   const stop = () => {
-    if (pingInterval) {
-      clearInterval(pingInterval)
-      pingInterval = null
-    }
+    clearOrderBook()
     if (ws) ws.close()
   }
 
@@ -71,7 +61,12 @@ export const useEvents = function () {
     ws.send(JSON.stringify({ pong: payload }))
   }
 
-  function handleMessage(this: WebSocket, event: MessageEvent) {
+  async function handleMessage(this: WebSocket, event: MessageEvent) {
+    if (!orderBook.value) {
+      await initOrderBook()
+      console.log('---------------')
+    }
+
     const data = JSON.parse(event.data)
     console.log('handleMessage')
 
@@ -88,13 +83,8 @@ export const useEvents = function () {
   }
 
   onUnmounted(() => {
+    stop()
     console.log('UNMOUNTED')
-
-    if (pingInterval) {
-      clearInterval(pingInterval)
-      pingInterval = null
-    }
-    if (ws) ws.close()
   })
 
   return { start, stop }

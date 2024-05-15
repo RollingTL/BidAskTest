@@ -19,8 +19,6 @@ export const useOrderBook = function () {
         throw new Error('Network response was not ok')
       }
       const data = await response.json()
-      console.log('+++++++++++')
-      console.log(data)
 
       orderBook.value = data
       loadingState.value = 'idle'
@@ -54,18 +52,21 @@ export const useOrderBook = function () {
         const lastUpdateId = orderBook.value.lastUpdateId
 
         if (UFrom <= lastUpdateId + 1 && uFinal >= lastUpdateId + 1) {
-          updateOrAdd(orderBook.value.bids, item.b)
-          updateOrAdd(orderBook.value.asks, item.a)
+          updateOrAddOrDel(orderBook.value.bids, item.b)
+          updateOrAddOrDel(orderBook.value.asks, item.a)
           // Sort the array in descending order
           orderBook.value.bids.sort((a, b) => Number(b[0]) - Number(a[0]))
           // Sort the array in ascending order
           orderBook.value.asks.sort((a, b) => Number(a[0]) - Number(b[0]))
+
+          removeItemsToMeetLimit(orderBook.value.bids, depth.value)
+          removeItemsToMeetLimit(orderBook.value.asks, depth.value)
           orderBook.value.lastUpdateId = uFinal + 1
         }
       }
     }
 
-    function updateOrAdd(base: [string, string][], diff: [string, string][]): void {
+    function updateOrAddOrDel(base: [string, string][], diff: [string, string][]): void {
       for (const [diffKey, diffValue] of diff) {
         const numericDiffValue = Number(diffValue)
         if (numericDiffValue === 0) {
@@ -84,6 +85,11 @@ export const useOrderBook = function () {
       }
     }
 
+    function removeItemsToMeetLimit(arr: [string, string][], limit: number) {
+      if (arr.length > limit) {
+        arr.splice(0, arr.length - limit)
+      }
+    }
     return
   }
 

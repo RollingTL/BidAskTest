@@ -11,8 +11,7 @@ const { selectedPair } = usePairs()
 
 start()
 
-watch(depth, async (newValue, oldValue) => {
-  console.log('depth changed from', oldValue, 'to', newValue)
+watch(depth, async () => {
   stop()
   await new Promise<void>((resolve) => {
     setTimeout(() => {
@@ -31,7 +30,7 @@ onUnmounted(() => {
     <div class="mt-16 pt-4">
       <v-card elevation="0" class="position-relative">
         <v-card-title
-          >Order Book
+          >Order Book: {{ selectedPair }}
           <div class="depth-selector d-flex align-baseline">
             <div class="text-subtitle-2 pr-2">Depth:</div>
             <v-menu>
@@ -52,7 +51,6 @@ onUnmounted(() => {
             </v-menu>
           </div>
         </v-card-title>
-        <v-card-subtitle>{{ selectedPair }}</v-card-subtitle>
       </v-card>
     </div>
 
@@ -122,7 +120,7 @@ table {
 }
 .head-table {
   td {
-    padding: 0 4px 4px 4px;
+    padding: 6px 4px 4px 4px;
     border-bottom: 2px solid black;
     font-weight: bold;
     font-size: 11px;

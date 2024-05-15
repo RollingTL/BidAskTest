@@ -23,7 +23,6 @@ export const useEvents = function () {
     ws = new WebSocket(endpoint + selectedPair.value.toLowerCase() + '@depth')
 
     ws.onopen = () => {
-      console.log('Connected to Binance WebSocket API')
       setInterval(() => {
         if (ws.readyState === ws.OPEN) {
           ws.send(JSON.stringify({ ping: Date.now() }))
@@ -41,7 +40,6 @@ export const useEvents = function () {
 
     ws.onmessage = handleMessage
     ws.onclose = () => {
-      console.log('Connection closed')
       if (pingInterval) {
         clearInterval(pingInterval)
         pingInterval = null
@@ -64,11 +62,9 @@ export const useEvents = function () {
   async function handleMessage(this: WebSocket, event: MessageEvent) {
     if (!orderBook.value) {
       await initOrderBook()
-      console.log('---------------')
     }
 
     const data = JSON.parse(event.data)
-    console.log('handleMessage')
 
     if (data.ping) {
       handlePing(this, data.ping)
@@ -84,7 +80,6 @@ export const useEvents = function () {
 
   onUnmounted(() => {
     stop()
-    console.log('UNMOUNTED')
   })
 
   return { start, stop }

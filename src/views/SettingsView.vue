@@ -5,7 +5,7 @@ import { computed } from 'vue'
 const { selectedPair, pairChangeLog } = usePairs()
 
 const log = computed(() => {
-  if (pairChangeLog.value === undefined || pairChangeLog.value.length === 0) return '.'
+  if (pairChangeLog.value === undefined || pairChangeLog.value.length === 0) return ':'
   else
     return pairChangeLog.value
       .slice()
@@ -31,8 +31,8 @@ const log = computed(() => {
     <div class="mt-16 pt-4">
       <v-card elevation="0" class="">
         <v-card-title>Settings</v-card-title>
-        <v-card class="">
-          <v-card-text class="text-center text-center">
+        <v-card class="bg-deep-orange-lighten-4">
+          <v-card-text class="text-center">
             <v-radio-group v-model="selectedPair" class="pt-8">
               <v-radio label="BTC USDT" value="BTCUSDT"></v-radio>
               <v-divider></v-divider>
@@ -47,7 +47,7 @@ const log = computed(() => {
     </div>
     <div class="">
       <v-card elevation="0" class="mt-4">
-        <v-card-title>Log</v-card-title>
+        <v-card-text>Log</v-card-text>
         <v-divider></v-divider>
       </v-card>
     </div>

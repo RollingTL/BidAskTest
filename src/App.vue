@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { ref } from 'vue'
+// import { ref } from 'vue'
 
-const drawer = ref(false)
 // import NavBar from './components/NavBar.vue'
 const menuItems = [
   { title: 'Home', path: '/', icon: 'home' },
@@ -14,7 +13,7 @@ const menuItems = [
 <template>
   <v-app>
     <v-app-bar class="px-4 px-md-8" :elevation="1">
-      <v-btn icon="mdi-wallet" to="/"> </v-btn>
+      <v-btn icon="mdi-beer-outline" to="/"> </v-btn>
       <v-spacer></v-spacer>
       <v-tabs class="d-none d-sm-flex">
         <v-list-item

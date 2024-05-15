@@ -11,3 +11,15 @@ type OrderBook = {
   bids: [string, string][] // Array of [price, quantity] tuples for bids
   asks: [string, string][] // Array of [price, quantity] tuples for asks
 }
+
+type DepthUpdate = {
+  e: string
+  E: number
+  s: string
+  U: number
+  u: number
+  b: [string, string][]
+  a: [string, string][]
+}
+
+type LoadingState = 'idle' | 'loading' | 'error' | 'complete'

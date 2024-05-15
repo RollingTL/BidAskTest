@@ -1,37 +1,34 @@
 import { ref } from 'vue'
 import { useDepth } from '@/modules/useDepth'
+import { usePairs } from '@/modules/usePairs'
 const URL = 'https://api.binance.com/api/v3/depth'
+const orderBook = ref<OrderBook>()
 
+const loadingState = ref<LoadingState>('idle')
 export const useOrderBook = function () {
   const { depth } = useDepth()
-  const orderBook = ref<OrderBook>()
-
+  const { selectedPair } = usePairs()
+  loadingState.value = 'idle'
   async function init() {
-    // Replace 'https://api.example.com/data' with the URL of your API
-    const apiUrl = `${URL}?symbol=BTCUSDT&limit=${depth.value.toString()}`
+    loadingState.value = 'loading'
+    const apiUrl = `${URL}?symbol=${selectedPair.value}&limit=${depth.value.toString()}`
 
     try {
-      // Make a GET request to the API endpoint
       const response = await fetch(apiUrl)
-
-      // Check if the response is successful
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
-
-      // Parse the JSON response
       const data = await response.json()
-
-      // Process the JSON data
+      console.log('+++++++++++')
       console.log(data)
 
       orderBook.value = data
-      // You can do something with the data here
+      loadingState.value = 'complete'
     } catch (error) {
-      // Handle any errors that occurred during the fetch
+      loadingState.value = 'error'
       console.error('There was a problem with the fetch operation:', error)
     }
   }
 
-  return { init, orderBook }
+  return { init, orderBook, loadingState }
 }

@@ -30,9 +30,11 @@ onUnmounted(() => {
     <div class="mt-16 pt-4">
       <v-card elevation="0" class="position-relative">
         <v-card-title
-          >Order Book: {{ selectedPair }}
+          >Order Book
           <div class="depth-selector d-flex align-baseline">
-            <div class="text-subtitle-2 pr-2">Depth:</div>
+            <div class="text-subtitle-2 pr-1">
+              <span class="pr-2">{{ selectedPair }}</span> Depth:
+            </div>
             <v-menu>
               <template v-slot:activator="{ props }">
                 <v-btn variant="tonal" v-bind="props"> {{ depth }} </v-btn>
@@ -54,50 +56,49 @@ onUnmounted(() => {
       </v-card>
     </div>
 
-    <div class="d-flex justify-space-between pt-4">
-      <div class="flex-grow-1 pr-0 pr-sm-4">
-        <table class="head-table">
-          <tr>
-            <td class="first text-center text-sm-left">Bid price</td>
-            <td class="second text-center text-sm-right">Amount</td>
-            <td class="third text-center text-sm-right hidden-xs hidden-sm">Value</td>
-          </tr>
-        </table>
-      </div>
-      <div class="flex-grow-1 pl-0 pl-sm-4">
-        <table class="head-table">
-          <tr>
-            <td class="first text-center text-sm-left">Ask price</td>
-            <td class="second text-center text-sm-right">Amount</td>
-            <td class="third text-center text-sm-right hidden-xs hidden-sm">Value</td>
-          </tr>
-        </table>
+    <div class="">
+      <div class="d-flex pt-4">
+        <div class="flex-grow-1 pl-2 pr-2">
+          <div class="head-table">
+            <div class="grid-item first text-center text-sm-left">Bid price</div>
+            <div class="grid-item second text-center text-sm-right">Amount</div>
+            <div class="grid-item third text-center text-sm-right hidden-xs hidden-sm">Value</div>
+          </div>
+        </div>
+        <div class="flex-grow-1 pl-2 pr-2">
+          <div class="head-table">
+            <div class="grid-item first text-center text-sm-left">Ask price</div>
+            <div class="grid-item second text-center text-sm-right">Amount</div>
+            <div class="grid-item third text-center text-sm-right hidden-xs hidden-sm">Value</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="flex-grow-1 overflow-y-scroll">
+
+    <div class="overflow-y-scroll">
       <div v-if="orderBook" class="d-flex text-mono text-right pt-4 pb-8">
-        <div class="flex-grow-1 pr-1 pr-sm-4">
-          <table class="data-table" v-if="orderBook">
-            <tr v-for="(item, index) in orderBook.bids" :key="index + item[0]">
-              <td class="first">{{ item[0].slice(0, -2) }}</td>
-              <td class="second">{{ item[1].slice(0, -2) }}</td>
-              <td class="third hidden-xs hidden-sm">
+        <div class="flex-grow-1 pl-2 pr-2">
+          <div v-if="orderBook">
+            <div v-for="(item, index) in orderBook.bids" :key="index + item[0]" class="data-table">
+              <div class="grid-item first">{{ item[0].slice(0, -2) }}</div>
+              <div class="grid-item second">{{ item[1].slice(0, -2) }}</div>
+              <div class="grid-item third hidden-xs hidden-sm">
                 {{ (Number(item[0]) * Number(item[1])).toFixed(2) }}
-              </td>
-            </tr>
-          </table>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="flex-grow-1 pl-0 pl-sm-4 pr-2 pr-sm-0">
-          <table class="data-table" v-if="orderBook">
-            <tr v-for="(item, index) in orderBook.asks" :key="index + item[0]">
-              <td class="first">{{ item[0].slice(0, -2) }}</td>
-              <td class="second">{{ item[1].slice(0, -2) }}</td>
-              <td class="third hidden-xs hidden-sm">
+        <div class="flex-grow-1 pl-2 pr-2">
+          <div v-if="orderBook">
+            <div v-for="(item, index) in orderBook.asks" :key="index + item[0]" class="data-table">
+              <div class="grid-item first">{{ item[0].slice(0, -2) }}</div>
+              <div class="grid-item second">{{ item[1].slice(0, -2) }}</div>
+              <div class="grid-item third hidden-xs hidden-sm">
                 {{ (Number(item[0]) * Number(item[1])).toFixed(2) }}
-              </td>
-            </tr>
-          </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div v-else class="ma-12 d-flex justify-center">
@@ -113,60 +114,33 @@ onUnmounted(() => {
   top: 5px;
 }
 
-table {
-  width: 100%;
+.head-table,
+.data-table {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  grid-gap: 0;
   border-collapse: collapse;
-  box-sizing: border-box;
+  .grid-item {
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+    padding: 4px;
+    box-sizing: border-box;
+  }
+  .grid-item.second {
+    background-color: #f2f2f2;
+  }
+  font-size: 10px;
+  @media (min-width: 960px) {
+    font-size: 12px;
+    grid-template-columns: 112px 112px 1fr;
+  }
 }
 .head-table {
-  td {
-    padding: 6px 4px 4px 4px;
-    border-bottom: 2px solid #999;
-    font-weight: bold;
-    font-size: 11px;
-    @media (min-width: 960px) {
-      font-size: 12px;
-    }
-  }
-  td.first {
-    width: 100px;
-    // background-color: aqua;
-  }
-  td.second {
-    // background-color: mediumseagreen;
-    @media (min-width: 960px) {
-      /* Increase font size for td on larger screens */
-      width: 100px;
-    }
-  }
-  td.third {
-    background-color: rgb(234, 234, 234);
-  }
-}
-.data-table {
-  td {
-    padding: 0 4px 0 4px;
-    font-size: 11px;
-    border-bottom: 1px solid #999;
-    @media (min-width: 960px) {
-      font-size: 12px;
-    }
-  }
-
-  td.first {
-    width: 100px;
-    // background-color: aqua;
-  }
-
-  td.second {
-    @media (min-width: 960px) {
-      /* Increase font size for td on larger screens */
-      width: 100px;
-    }
-    // background-color: mediumseagreen;
-  }
-  td.third {
-    background-color: rgb(234, 234, 234);
+  font-weight: bold;
+  .grid-item {
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    padding: 10px;
   }
 }
 </style>

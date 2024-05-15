@@ -8,11 +8,13 @@ const { selectedPair } = usePairs()
   <div class="mt-16 pt-4">
     <v-sheet elevation="0" class="mt-4 mt-sm-8">
       <div class="d-flex justify-center pt-4 pt-sm-16 position-relative">
-        <div class="bg-grey-lighten-2 rounded-circle pa-4 pa-sm-12 d-flex justify-center">
+        <div class="bg-grey-lighten-4 rounded-circle pa-8 pa-sm-12 d-flex justify-center">
           <v-icon size="144" class="text-grey-darken-1">mdi-beer-outline</v-icon>
         </div>
       </div>
-      <div class="text-h6 text-center pt-2 mb-2 mb-sm-16">{{ selectedPair }}</div>
+      <div class="text-h6 text-grey-darken-1 text-center pt-4 mb-2 mb-sm-16">
+        {{ selectedPair }}
+      </div>
       <v-container class="">
         <v-row no-gutters class="">
           <v-col class="align-self-stretch">

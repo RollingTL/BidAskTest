@@ -20,7 +20,14 @@ const { selectedPair } = usePairs()
               <v-sheet class="px-2 pb-1 d-flex align-center justify-center bg-transparent"
                 >Bid Ask table</v-sheet
               >
-              <v-btn prepend-icon="mdi-format-columns" size="large" block to="/order-book">
+              <v-btn
+                variant="elevated"
+                elevation="1"
+                prepend-icon="mdi-format-columns"
+                size="large"
+                block
+                to="/order-book"
+              >
                 Order Book
               </v-btn>
             </v-sheet>
@@ -30,7 +37,14 @@ const { selectedPair } = usePairs()
               <v-sheet class="px-2 pb-1 d-flex align-center justify-center bg-transparent"
                 >View and change Pair</v-sheet
               >
-              <v-btn prepend-icon="mdi-cog-outline" size="large" block to="/settings">
+              <v-btn
+                variant="elevated"
+                elevation="1"
+                prepend-icon="mdi-cog-outline"
+                size="large"
+                block
+                to="/settings"
+              >
                 Settings
               </v-btn>
             </v-sheet>

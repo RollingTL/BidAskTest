@@ -121,7 +121,7 @@ table {
 .head-table {
   td {
     padding: 6px 4px 4px 4px;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid #999;
     font-weight: bold;
     font-size: 11px;
     @media (min-width: 960px) {
@@ -147,7 +147,7 @@ table {
   td {
     padding: 0 4px 0 4px;
     font-size: 11px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #999;
     @media (min-width: 960px) {
       font-size: 12px;
     }

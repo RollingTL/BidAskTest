@@ -31,7 +31,7 @@ const log = computed(() => {
     <div class="mt-16 pt-4">
       <v-card elevation="0" class="">
         <v-card-title>Settings</v-card-title>
-        <v-card class="bg-deep-orange-lighten-4">
+        <v-card class="bg-grey-lighten-3">
           <v-card-text class="text-center">
             <v-radio-group v-model="selectedPair" class="pt-2">
               <v-radio label="BTC USDT" value="BTCUSDT"></v-radio>
